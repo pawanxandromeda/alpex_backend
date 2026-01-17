@@ -1,10 +1,10 @@
 import Redis from "ioredis";
 
-let redis: Redis | null = null;
+const redis = process.env.REDIS_URL
+  ? new Redis(process.env.REDIS_URL)
+  : (null as unknown as Redis);
 
 if (process.env.REDIS_URL) {
-  redis = new Redis(process.env.REDIS_URL);
-
   redis.on("connect", () => {
     console.log("✅ Redis connected");
   });
