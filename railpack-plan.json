@@ -1,7 +1,7 @@
 {
   "build": {
     "builder": "node",
-    "nodeVersion": "22"
+    "nodeVersion": "20"
   },
   "deploy": {
     "startCommand": "npm run start"
