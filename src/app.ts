@@ -56,7 +56,8 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 
 /* 🔥 REQUIRED FOR PREFLIGHT */
-app.options("*", cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
+
 
 /* ===============================
    ROUTES
