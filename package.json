@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-     "postinstall": "prisma generate",
+    "postinstall": "apt-get update && apt-get install -y libatomic1 || echo 'Skipping libatomic1 installation on non-Linux'",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
