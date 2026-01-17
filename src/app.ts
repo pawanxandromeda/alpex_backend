@@ -22,7 +22,7 @@ app.use(
     origin: (origin, callback) => {
       const allowedOrigins = [
         "http://localhost:5173",
-        "https://alpex-git-main-pawanxandromedas-projects.vercel.app",
+        "https://alpex-f5hk.vercel.app",
         "https://alpex-customers.onrender.com",
       ];
       if (!origin || allowedOrigins.includes(origin)) {
