@@ -1,8 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+
 import employeeRoutes from "./modules/employee/employee.routes";
 import authRoutes from "./modules/auth/auth.routes";
 import customerRoutes from "./modules/customer/customer.routes";
@@ -11,20 +13,28 @@ import purchaseOrderRoutes from "./modules/purchaseOrder/purchaseOrder.routes";
 import designerRoutes from "./modules/designer/designer.routes";
 import accountsRoutes from "./modules/accounts/accounts.routes";
 
-
-
-
 const app = express();
 
+/* ✅ Helmet FIRST */
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
+
+/* ✅ JSON */
 app.use(express.json());
+
+/* ✅ CORS */
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://alpex-f5hk.vercel.app",
+  "https://alpex-customers.onrender.com",
+];
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowedOrigins = [
-        "http://localhost:5173",
-        "https://alpex-f5hk.vercel.app",
-        "https://alpex-customers.onrender.com",
-      ];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -32,10 +42,15 @@ app.use(
       }
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-app.use(helmet());
 
+/* ✅ IMPORTANT: Preflight handler */
+app.options("*", cors());
+
+/* Routes */
 app.use("/api/employees", employeeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
@@ -43,6 +58,5 @@ app.use("/api/todos", todosRoutes);
 app.use("/api/po", purchaseOrderRoutes);
 app.use("/api/designer", designerRoutes);
 app.use("/api/accounts", accountsRoutes);
-
 
 export default app;
