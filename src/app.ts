@@ -47,8 +47,7 @@ app.use(
   })
 );
 
-/* ✅ IMPORTANT: Preflight handler */
-app.options("*", cors());
+
 
 /* Routes */
 app.use("/api/employees", employeeRoutes);
