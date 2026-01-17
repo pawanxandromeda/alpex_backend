@@ -1,0 +1,170 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Status {
+  Active
+  Inactive
+}
+
+enum ShiftType {
+  Day
+  Night
+  Rotational
+}
+
+model Employee {
+  id                String           @id @default(uuid())
+  username          String           @unique
+  password          String
+  authorization     String
+  status            Status           @default(Inactive)
+  refreshToken      String?
+  name              String           @default("Nil")
+  designation       String           @default("Nil")
+  department        String           @default("Nil")
+  ctc               Float?
+  esic              Float?
+  pf                Float?
+  shiftType         ShiftType        @default(Day)
+  joiningDate       DateTime         @default(now())
+  employmentHistory String[]
+  resume            String?          @default("Nil")
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model Customer {
+  id                   String   @id @default(uuid())
+  customerID           String
+  customerName         String
+  address              String
+  creditLimit          Float
+  creditApprovalStatus String   @default("Approved") // NEW
+  paymentTerms         String
+  throughVia           String
+  gstrNo               String   @unique
+  kycProfile           String
+
+  contactName          String
+  contactPhone         String
+  contactEmail         String?
+
+  // MULTIPLE CONTACTS (driver, dispatcher, manager etc.)
+  contacts             Json?
+
+  remarks              String?
+  relationshipStatus   String?
+  gstCopy              String?
+  dlExpiry             DateTime?
+
+  isBlacklisted        Boolean  @default(false)
+  blacklistReason      String?
+  blacklistedAt        DateTime?
+
+  purchaseOrders       PurchaseOrder[]
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([customerID])
+}
+
+model Todo {
+  id        String   @id @default(uuid())
+  title     String
+  username  String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+  model PurchaseOrder {
+    id                          String           @id @default(uuid())
+    gstNo                       String
+    customer                    Customer         @relation(fields: [gstNo], references: [gstrNo])
+    poNo                        String           @unique
+    poDate                      DateTime?
+    dispatchDate                DateTime?
+    brandName                   String?
+    partyName                   String?
+    batchNo                     String?
+    paymentTerms                String?
+    invCha                      String?
+    cylChar                     String?
+    orderThrough                String?
+    address                     String?
+    composition                 String?
+    notes                       String?
+    rmStatus                    String?
+    poQty                       Int?
+    poRate                      Float?
+    amount                      Float?
+    mrp                         Float?
+    section                     String?
+    tabletCapsuleDrySyrupBottle String?
+    roundOvalTablet             String?
+    tabletColour                String?
+    aluAluBlisterStripBottle    String?
+    packStyle                   String?
+    productNewOld               String?
+    qaObservations              String?
+    batchQty                    Int?
+    expiry                      DateTime?
+    pvcColourBase               String?
+    foil                        String?
+    lotNo                       String?
+    foilPoDate                  DateTime?
+    foilSize                    String?
+    foilPoVendor                String?
+    foilBillDate                DateTime?
+    foilQuantity                Int?
+    cartonPoDate                DateTime?
+    cartonPoVendor              String?
+    cartonBillDate              DateTime?
+    cartonQuantity              Int?
+    packingDate                 DateTime?
+    qtyPacked                   Int?
+    noOfShippers                Int?
+    design                      String?
+    overallStatus               String           @default("Pending")
+    invoiceNo                   String?
+    invoiceDate                 DateTime?
+    changePart                  Int?
+    cyc                         Int?
+    advance                     Float?
+    showStatus                  String           @default("Order Pending")
+    mdApproval                  String           @default("Pending")
+    accountsApproval            String           @default("Pending")
+    designerApproval            String           @default("Pending")
+    ppicApproval                String           @default("Pending")
+    designerActions            Json?
+    accountBills               Json?
+    salesComments              String?
+    poDisputes                 Json?
+    createdAt                   DateTime         @default(now())
+    updatedAt                   DateTime         @updatedAt
+
+    @@index([gstNo]) // customer-wise PO listing
+    @@index([poDate]) // date filters
+    @@index([overallStatus]) // dashboards & approvals
+    @@index([createdAt]) // pagination sorting
+  }
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
