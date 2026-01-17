@@ -27,9 +27,9 @@ app.use(express.json());
 
 /* ✅ CORS */
 const allowedOrigins = [
-  "http://localhost:5173",
   "https://alpex-f5hk.vercel.app",
-  "https://alpex-customers.onrender.com",
+  "https://alpex-f5hk.vercel.app",
+  "https://alpex-f5hk.vercel.app",
 ];
 
 app.use(
