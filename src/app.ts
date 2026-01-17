@@ -33,7 +33,7 @@ app.use(express.json());
    CORS CONFIG (TS SAFE)
 ================================ */
 const allowedOrigins: string[] = [
-  "https://alpex-f5hk.vercel.app",
+  "https://alpex-frontend-self.vercel.app",
 ];
 
 const corsOptions: CorsOptions = {
