@@ -17,7 +17,7 @@ export const login = async (username: string, password: string) => {
   const accessToken = generateAccessToken({
     id: employee.id,
     role: employee.authorization,
-    department:employee.department,
+    department: employee.department, // Include department in token
   });
 
   const refreshToken = generateRefreshToken({ id: employee.id });
@@ -27,7 +27,7 @@ export const login = async (username: string, password: string) => {
     data: { refreshToken },
   });
 
-  return { accessToken, refreshToken };
+  return { accessToken, refreshToken, department: employee.department }; // Return department in response
 };
 
 export const refresh = async (token: string) => {
